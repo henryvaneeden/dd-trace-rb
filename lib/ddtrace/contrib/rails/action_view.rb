@@ -12,6 +12,7 @@ module Datadog
 
         def self.start_render_template(payload)
           # retrieve the tracing context
+            Datadog::Tracer.log.debug("start_render_template zone 1")
           tracing_context = payload.fetch(:tracing_context)
 
           # create a new Span and add it to the tracing context
@@ -23,6 +24,7 @@ module Datadog
         end
 
         def self.finish_render_template(payload)
+          Datadog::Tracer.log.debug("finish_render_template zone 1")
           # retrieve the tracing context and the latest active span
           tracing_context = payload.fetch(:tracing_context)
           span = tracing_context[:dd_rails_template_span]
@@ -45,6 +47,7 @@ module Datadog
         end
 
         def self.start_render_partial(payload)
+          Datadog::Tracer.log.debug("start_render_partial zone 2")
           # retrieve the tracing context
           tracing_context = payload.fetch(:tracing_context)
 
@@ -56,6 +59,9 @@ module Datadog
         end
 
         def self.finish_render_partial(payload)
+            Datadog::Tracer.log.debug("finish_render_partial zone 3")
+            Datadog::Tracer.log.debug("payload #{payload.to_yaml}")
+
           # retrieve the tracing context and the latest active span
           tracing_context = payload.fetch(:tracing_context)
           span = tracing_context[:dd_rails_partial_span]
